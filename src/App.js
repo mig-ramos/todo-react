@@ -11,6 +11,26 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Load todos on page load
+  useEffect(() => {
+
+    const loadData = async() => {
+
+      setLoading(true)
+
+      const res = await fetch(API + "/todos")
+      .then((res) => res.json())
+      .then((data) => data)
+      .catch((err) => console.log(err));
+
+      setLoading(false);
+
+      setTodos(res);
+    };
+
+    loadData();
+  }, []);
+
   // Para não renderizar o formulário qdo clicar no botão
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,9 +57,14 @@ function App() {
       }
     })
 
+    setTodos((prevState) => [...prevState, todo]);
     setTitle("");
     setTime("");
   };
+
+  if (loading) {
+    return <p>Carregando...</p>;
+  }
 
   return (
     <div className="App">
@@ -75,6 +100,18 @@ function App() {
     <div className='list-todo'>
       <h2>Lista de tarefas:</h2>
       {todos.length === 0 && <p>Não há tarefas!</p>}
+      {todos.map((todo) => (
+        <div className="todo" key={todo.id}>
+          <h3 className={todo.done ? "todo-done" : ""}>{todo.title}</h3>
+          <p>Duração: {todo.time}</p>
+          <div className='actions'>
+            <span>
+              {!todo.done ? <BsBookmarkCheck /> : <BsBookmarkCheckFill />}
+            </span>
+            <BsTrash />
+            </div>
+        </div>
+      ))}
     </div>
     </div>
   );
