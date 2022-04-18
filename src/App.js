@@ -12,7 +12,7 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   // Para não renderizar o formulário qdo clicar no botão
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // console.log(title);
@@ -28,7 +28,14 @@ function App() {
     // // Envio para api
     // console.log(todo);
 
-    
+    // JavaScript nativo para envio para API
+    await fetch(API + "/todos", {
+      method: "POST",
+      body: JSON.stringify(todo),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
 
     setTitle("");
     setTime("");
