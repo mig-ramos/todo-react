@@ -25,8 +25,10 @@ function App() {
       done: false,
     };
 
-    // Envio para api
-    console.log(todo);
+    // // Envio para api
+    // console.log(todo);
+
+    
 
     setTitle("");
     setTime("");
